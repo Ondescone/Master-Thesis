@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!--
   ~ Copyright 2020 Open Networking Foundation
   ~
@@ -43,7 +42,7 @@
 
 
     <dependencies>
-        <!--
+
         <dependency>
             <groupId>onos-of-api-1.6.0</groupId>
             <artifactId>onos-of-api-1.6.0</artifactId>
@@ -51,7 +50,12 @@
             <version>1.6.0</version>
             <systemPath>${basedir}/src/lib/onos-of-api-1.6.0.jar</systemPath>
         </dependency>
-        -->
+        <dependency>
+            <groupId>org.projectfloodlight</groupId>
+            <artifactId>openflowj</artifactId>
+            <version>3.6.578</version>
+        </dependency>
+
         <!--
         <dependency>
             <groupId>org.onosproject</groupId>
@@ -203,8 +207,10 @@
           <instructions>
             <Karaf-Commands>org.foo.app</Karaf-Commands>
             <_wab>src/main/webapp/</_wab>
+              <!--
             <Include-Resource>WEB-INF/classes/apidoc/swagger.json=target/swagger.json,
                             {maven-resources}</Include-Resource>
+                            -->
             <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
             <Import-Package>*,org.glassfish.jersey.servlet</Import-Package>
             <Web-ContextPath>${web.context}</Web-ContextPath>
@@ -262,6 +268,9 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+      </plugin>
         </plugins>
     </build>
 

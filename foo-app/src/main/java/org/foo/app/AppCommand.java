@@ -15,14 +15,20 @@
  */
 package org.foo.app;
 
+import org.apache.karaf.shell.api.action.Argument;
 import org.apache.karaf.shell.api.action.Command;
+import org.apache.karaf.shell.api.action.Completion;
 import org.apache.karaf.shell.api.action.lifecycle.Service;
 import org.apache.karaf.shell.impl.action.command.ManagerImpl;
+import org.onlab.packet.MacAddress;
 import org.onosproject.cli.AbstractShellCommand;
 
+import org.onosproject.cli.net.HostIdCompleter;
 import org.onosproject.core.ApplicationId;
 import org.onosproject.core.CoreService;
 import org.onosproject.net.DeviceId;
+import org.onosproject.net.Host;
+import org.onosproject.net.HostId;
 import org.onosproject.net.device.DeviceService;
 import org.onosproject.net.Device;
 //import org.onosproject.snmp.SnmpController;
@@ -37,19 +43,24 @@ import org.onosproject.net.flow.TrafficTreatment;
 import org.onosproject.net.flowobjective.DefaultForwardingObjective;
 import org.onosproject.net.flowobjective.FlowObjectiveService;
 import org.onosproject.net.flowobjective.ForwardingObjective;
+import org.onosproject.net.host.HostService;
+import org.onosproject.net.link.LinkService;
 import org.slf4j.Logger;
 import static org.slf4j.LoggerFactory.getLogger;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
 import static org.foo.app.OsgiPropertyConstant.OsgiPropertyConstants.FLOW_PRIORITY;
 import static org.foo.app.OsgiPropertyConstant.OsgiPropertyConstants.FLOW_PRIORITY_DEFAULT;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkArgument;
+
 
 /**
  * Sample Apache Karaf CLI command
  */
 @Service
-@Command(scope = "onos", name = "sample",
-         description = "Sample Apache Karaf CLI command")
+@Command(scope = "onos", name = "use-case-1",
+         description = "Sample Apache Karaf CLI command for isolating a host node")
 public class AppCommand extends AbstractShellCommand {
 
     @Reference(cardinality = ReferenceCardinality.MANDATORY)
@@ -58,12 +69,21 @@ public class AppCommand extends AbstractShellCommand {
     protected CoreService coreService;
     @Reference(cardinality = ReferenceCardinality.MANDATORY)
     protected FlowObjectiveService flowObjectiveService;
+    @Reference(cardinality = ReferenceCardinality.MANDATORY)
+    protected HostService hostService;
     private final Logger log = getLogger(getClass());
     /** Configure Flow Priority for installed flow rules; default is 10. */
-    private int flowPriority = FLOW_PRIORITY_DEFAULT;
+    private int flowPriority = FLOW_PRIORITY_DEFAULT*10+10;
     private ApplicationId appId;
-    //@Reference(cardinality = ReferenceCardinality.MANDATORY)
-    //protected OpenFlowController controller;
+    /*@Reference(cardinality = ReferenceCardinality.MANDATORY)
+    protected OpenFlowController controller;*/
+    @Argument(index = 0, name = "one", description = "One host ID",
+            required = true, multiValued = false)
+    @Completion(HostIdCompleter.class)
+    String one = null;
+
+    private static final String NO_SEP_SPECIFIED =
+            "Connect point not specified, Connect point must be in \"deviceUri/portNumber\" format";
 
 
     @Override
@@ -71,17 +91,17 @@ public class AppCommand extends AbstractShellCommand {
         this.deviceService = AbstractShellCommand.get(DeviceService.class);
         this.coreService = AbstractShellCommand.get(CoreService.class);
         this.flowObjectiveService = AbstractShellCommand.get(FlowObjectiveService.class);
-        TrafficSelector.Builder selectorBuilder = DefaultTrafficSelector.builder();
+        this.hostService = AbstractShellCommand.get(HostService.class);
+        //TrafficSelector.Builder selectorBuilder = DefaultTrafficSelector.builder();
         appId = coreService.registerApplication("org.foo.app");
         //this.controller = AbstractShellCommand.get(OpenFlowController.class);
         //DefaultSnmpDevice snmpDevice;
         //SnmpController snmpController = AbstractShellCommand.get(SnmpController.class);
         //snmpController.getDevices().forEach(d->System.out.println("Snmp id: "+d.deviceId()));
+        HostId oneId = HostId.hostId(one);
+        System.out.println(oneId.mac().toString());
+        TrafficSelector.Builder selectorBuilder = DefaultTrafficSelector.builder().matchEthSrc(oneId.mac());
         Iterable<Device> devices = deviceService.getDevices();
-        for(Device d : devices){
-            print("Device id: "+d.id().toString());
-        }
-        print("Hello %s", "World");
         /*for (OpenFlowSwitch sw : controller.getSwitches()) {
             print("Sono qui");
         }*/
@@ -95,7 +115,13 @@ public class AppCommand extends AbstractShellCommand {
                 .fromApp(appId)
                 .add();
 
-        DeviceId deviceId = DeviceId.deviceId("of:0000000000000001");
+        Host host = this.hostService.getHost(oneId);
+        checkNotNull(host.location().toString());
+        int idx = host.location().toString().lastIndexOf("/");
+        checkArgument(idx != -1, NO_SEP_SPECIFIED);
+
+        String stringId = host.location().toString().substring(0, idx);
+        DeviceId deviceId = DeviceId.deviceId(stringId);
         flowObjectiveService.forward(deviceId,
                 forwardingObjective);
     }
