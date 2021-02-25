@@ -6,3 +6,5 @@ CORE fornisce uno script per automatizzare l'installazione dell'ambiente virtual
 * git clone https://github.com/coreemu/core.git
 *  cd core
 * ./install.sh 
+
+Dopo che l'installazione è avvenuta con successo si dovrebbe essere in grado di eseguire core-daemon e core-pygui. Il demone core può essere avviato direttamente da command line, utile per vedere i log generati: **sudo core-daemon --ovs**. Il flag --ovs permette di creare tutti gli switch Ethernet istanziati sull'ambiente CORE usando openvswitch, eseguito non nel contesto del singolo nodo.
