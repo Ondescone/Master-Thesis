@@ -13,4 +13,4 @@ Installazione diretta di openvswitch:
 * sudo apt upgrade
 * sudo apt install openvswitch-switch
 
-Si ha in dotazione *ovs-vsctl*, l'utility che permette di aggiornare ed interrogare il demone che implementa lo switch ovs (*ovs-vswitchd*). Utilizzando il comando **ovs-vsctl show** si ha una overview del contenuto del database di ovs, che mostra i bridge creati, di solito denominati con il prefisso *b.* seguiti da una notazione decimale puntata.
+Si ha in dotazione *ovs-vsctl*, l'utility che permette di aggiornare ed interrogare il demone che implementa lo switch ovs (*ovs-vswitchd*). Utilizzando il comando **ovs-vsctl show** si ha una overview del contenuto del database di ovs, che mostra i bridge creati, di solito denominati con il prefisso *b.* seguiti da una notazione decimale puntata. Potenzialmente tutti i bridge listati possono essere connessi al controller ONOS. Il protocollo OpenFlow non è abilitato di default e per configurare un bridge (e.g b.1.2) per supportare le versioni del protocollo è necessario lanciare il comando **ovs-vsctl set bridge b.1.2 protocols=OpenFlow10,OpenFlow12,Open-Flow13,OpenFlow14,OpenFlow15**.
