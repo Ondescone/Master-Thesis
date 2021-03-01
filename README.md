@@ -21,8 +21,14 @@ Si ha in dotazione *ovs-vsctl*, l'utility che permette di aggiornare ed interrog
 
 ### core-pygui
 
-Per la GUI di CORE si utilizza la versione BETA Python GUI e non la standard, in quanto essa da il supporto per l'esecuzione di nodi basati su container Docker. Essa viene eseguita scrivendo da shell **core-pygui** (la GUI non necessita di essere eseguita come root) e si presenta in questo modo:
+Per la GUI di CORE si utilizza la versione BETA Python GUI e non la standard, in quanto essa include il supporto per l'esecuzione di nodi basati su container Docker. Essa viene eseguita scrivendo da shell **core-pygui** (la GUI non necessita di essere eseguita come root) e si presenta in questo modo:
 
 ![](images/CORE%20GUI.png)
+
+I nodi, raffigurati dalle icone a destra della GUI nella toolbar, sono instanziati selezionandoli e trascinandoli sulla sfondo bianco. Il nodo Docker è situato nella sezione *Container Nodes* e rappresentato da un cerchio blu:
+
+![](images/Toolbar%20GUI%20CORE_1.png)
+
+
 
 
