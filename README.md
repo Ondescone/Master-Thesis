@@ -31,7 +31,10 @@ I nodi, raffigurati dalle icone a destra della GUI nella toolbar, sono instanzia
 
 Il nodo Docker può essere configurato effettuando un doppio click su di esso: qui è possibile specificare nella campo *Image*  l'immagine base da cui il container verrà costruito ed eseguito (default *ubuntu:latest*). Le immagini devono essere presenti nel repository locale.
 
-Prima di avviare l'emulazione (cliccando sul pulsante *Start Button*), è bene configurare opportunamente i container Docker per far si che sia CORE ad orchestrare la connessione tra i nodi. Bisognerà quindi eliminare la rete docker di default e disabilitare l'aggiunta delle regole iptable. Il [supporto Docker](https://github.com/coreemu/core/tree/master/daemon/examples/docker) contiene tutte le informazioni dettagliate.
+Prima di avviare l'emulazione (cliccando sul pulsante *Start Button*), è bene configurare opportunamente i container Docker per far si che sia CORE ad orchestrare la connessione tra i nodi. Bisognerà quindi eliminare la rete docker di default e disabilitare l'aggiunta delle regole iptable. Il [supporto Docker](https://github.com/coreemu/core/tree/master/daemon/examples/docker) contiene tutte le informazioni dettagliate. Importante è aggiungere nei Dockerfile i tool di networking per la configurazione del container. Oltre a quelli specificati nel link di supporto, si consiglia di aggiungere anche il package contenente il comando *ping*:
+> RUN apt-get update
+> RUN apt-get install -y iproute2 ethtool && \ 
+>     apt-get install -y iputils-ping
 
 
 
