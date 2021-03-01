@@ -23,6 +23,6 @@ Si ha in dotazione *ovs-vsctl*, l'utility che permette di aggiornare ed interrog
 
 Per la GUI di CORE si utilizza la versione BETA Python GUI e non la standard, in quanto essa da il supporto per l'esecuzione di nodi basati su container Docker. Essa viene eseguita scrivendo da shell **core-pygui** (la GUI non necessita di essere eseguita come root) e si presenta in questo modo:
 
-![](images/CORE%GUI.pgn)
+![](images/CORE%20GUI.png)
 
 
