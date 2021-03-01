@@ -29,6 +29,7 @@ I nodi, raffigurati dalle icone a destra della GUI nella toolbar, sono instanzia
 
 ![](images/Toolbar%20GUI%20CORE_1.png)
 
+Il nodo Docker può essere configurato effettuando un doppio click su di esso: qui è possibile specificare nella campo *Image*  l'immagine base da cui il container verrà costruito ed eseguito (default *ubuntu:latest*). Le immagini devono essere presenti nel repository locale.
 
 
 
