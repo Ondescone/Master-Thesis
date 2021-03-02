@@ -40,5 +40,8 @@ RUN apt-get install -y iproute2 ethtool && \
     apt-get install -y iputils-ping
 ```
 
+Durante il *docker build* è probabile che si cada nell'errore in cui apt-get non è in grado di risolvere i domini e quindi scaricare i package necessari per costruire l'immagine. Infatti accade che Docker non è in grado di trovare un server DNS definito localmente nel file */etc/resolv.conf* e il container userà di default il server DNS di Google 8.8.8.8. Utilizzando la configurazione di default, i container Docker non saranno in grado di risolvere i domini DNS, questo significa che Interner è completamente irraggiungibile dai container.
+Per risolvere questo problema si deve specificare un server DSN custom: nella cartella root dove è presente il Dockerfile eseguire il seguente domando che configura docker ad utilizzare la stessa rete dell'host locale:
+**docker build --network=host -t my-image-name .**
 
 
