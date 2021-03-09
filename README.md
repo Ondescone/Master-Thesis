@@ -45,4 +45,4 @@ Per risolvere questo problema, nella cartella root dove è presente il Dockerfil
 
 **docker build --network=host -t my-image-name .**
 
-
+Set the NIC in promiscuous mode from VM settings and in the console issue the command: ip link set eth1 promisc on
